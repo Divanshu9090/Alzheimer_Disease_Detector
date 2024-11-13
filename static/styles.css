@@ -23,7 +23,7 @@
 .body {
     height: 100vh;
     width: 100vw;
-    background-image: url("https://emag.medicalexpo.com/wp-content/uploads/sites/9/Alzheimers-Disease_iStock.jpg");
+    background-image: url("./bg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
