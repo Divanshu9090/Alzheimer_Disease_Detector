@@ -5,26 +5,47 @@
     font-family: Arial, sans-serif;
 }
 
-body {
+.nav {
+    position: fixed;
+    top: 0;
+    height: 4rem;
+    width: 100vw;
+    background-color: #182666;
+    border-bottom: 2px solid black;
+}
+
+.nav h1 {
+    text-align: center;
+    color: white;
+    padding: 10px;
+}
+
+.body {
+    height: 100vh;
+    width: 100vw;
+    background-image: url("https://emag.medicalexpo.com/wp-content/uploads/sites/9/Alzheimers-Disease_iStock.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    min-height: 100vh;
-    background-color: #f4f4f4;
 }
 
 .container {
     text-align: center;
-    background: #fff;
+    background-color: rgba(255, 255, 255, 0.6);
     padding: 30px;
-    border-radius: 8px;
+    border-radius: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
 }
 
-h1 {
-    color: #333;
+h2,p {
+    color: black;
     margin-bottom: 20px;
 }
+
 
 input[type="file"] {
     margin: 15px 0;
@@ -48,4 +69,63 @@ button:hover {
     margin-top: 20px;
     font-size: 18px;
     color: #333;
+}
+
+.image-upload-label {
+    display: inline-block; /* Make the label inline block to center it */
+    padding: 10px;
+    border: 2px dashed #ccc; /* Dashed border to indicate where to drop the image */
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+}
+
+.image-upload-label span {
+    display: block;
+    margin-bottom: 0px;
+    font-size: 16px;
+}
+
+#imageInput {
+    display: none; /* Hide the default file input */
+}
+
+.image-preview {
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.image-preview img {
+    max-width: 300px; /* Limit the size of the preview image */
+    max-height: 300px; /* Limit the size of the preview image */
+    border: 1px solid #ddd; /* Border around the preview image */
+    border-radius: 4px; /* Rounded corners */
+}
+
+#uploadSection, #btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#btn {
+    flex-direction: column;
+}
+
+button {
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+#uploadSection.hidden {
+    display: none;
+}
+
+#result{
+    color: black;
 }

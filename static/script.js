@@ -1,4 +1,29 @@
-document.getElementById("uploadForm").addEventListener("submit", async (event) => {
+function handleImagePreview() {
+    const fileInput = document.getElementById('imageInput');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const uploadSection = document.getElementById('uploadSection');
+    const changeImageButton = document.getElementById('changeImageButton');
+
+    fileInput.addEventListener('change', function () {
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewContainer.innerHTML = `<img src="${e.target.result}" alt="MRI Image Preview">`;
+                uploadSection.classList.add('hidden'); // Hide the upload section
+                changeImageButton.classList.remove('hidden'); // Show the Change Image button
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Change image functionality
+    changeImageButton.addEventListener('click', function () {
+        fileInput.click(); // Trigger the file input click to change the image
+    });
+}
+
+document.getElementById("uploadForm").addEventListener("click", async (event) => {
     event.preventDefault();
 
     const imageInput = document.getElementById("imageInput");
@@ -25,3 +50,5 @@ document.getElementById("uploadForm").addEventListener("submit", async (event) =
         document.getElementById("result").textContent = `An error occurred: ${error.message}`;
     }
 });
+
+handleImagePreview();

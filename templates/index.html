@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Classification</title>
-    <link rel="stylesheet" href="../static/styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alzheimer Disease Detector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles.css" />
 </head>
+
 <body>
-    <div class="container">
-        <h1>Image Classification</h1>
-        <form id="uploadForm">
-            <input type="file" id="imageInput" accept="image/*" required />
-            <button type="submit">Classify Image</button>
-        </form>
-        <div id="result"></div>
-    </div>
+    <header class="nav">
+        <h1>Alzheimer Disease Detector</h1>
+    </header>
+    <main class="body">
+        <div class="container">
+            <h2>Image Classification</h2>
+            <p class="intro-text">Upload an MRI image to classify whether it shows signs of Alzheimer's Disease.</p>
+            <div id="uploadSection">
+                <label for="imageInput" class="image-upload-label">
+                    <span>Upload MRI Image</span>
+                    <input type="file" id="imageInput" accept="image/*" required />
+                </label>
+            </div>
+            <div id="btn">
+                <div id="imagePreviewContainer" class="image-preview">
+                    <!-- Image preview will be shown here -->
+                </div>
+                <button id="changeImageButton" class="hidden">Change Image</button>
+                <button id="uploadForm" class="action-button">Classify Image</button>
+            </div>
+            <div id="result" class="result"></div>
+        </div>
+    </main>
 
     <script src="../static/script.js"></script>
 </body>
+
 </html>
