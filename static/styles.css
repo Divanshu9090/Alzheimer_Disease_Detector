@@ -38,7 +38,7 @@
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    margin-right: 20px;
+    margin-right: 5%;
 }
 
 h2,p {
@@ -128,4 +128,22 @@ button {
 
 #result{
     color: black;
+}
+
+@media (max-width: 800px) {
+    .container{
+        margin: 0;
+    }
+    .body{
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width: 440px){
+    .nav h1{
+        font-size: 1.5rem;
+        text-align: center;
+        padding: 15px 0;
+    }
 }
