@@ -42,7 +42,9 @@ document.getElementById("uploadForm").addEventListener("click", async (event) =>
         });
         const result = await response.json();
         if (response.ok) {
-            document.getElementById("result").textContent = `Predicted Class: ${result.class}`;
+            const ans=document.createElement('p');
+            ans.textContent = `Predicted Class: ${result.class}`;
+            document.getElementById("result").appendChild(ans);
         } else {
             document.getElementById("result").textContent = `Error: ${result.error}`;
         }

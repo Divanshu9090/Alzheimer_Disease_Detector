@@ -41,10 +41,12 @@
     margin-right: 5%;
 }
 
-h2,p {
+h2, .intro-text {
     color: black;
     margin-bottom: 20px;
 }
+
+
 
 
 input[type="file"] {
@@ -65,11 +67,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-#result {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #333;
-}
 
 .image-upload-label {
     display: inline-block; /* Make the label inline block to center it */
@@ -127,7 +124,19 @@ button {
 }
 
 #result{
-    color: black;
+    padding: 0;
+    margin: 0;
+    /* color: black; */
+    background-color: goldenrod;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+#result p{
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
 }
 
 @media (max-width: 800px) {
