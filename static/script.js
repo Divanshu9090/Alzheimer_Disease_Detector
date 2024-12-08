@@ -44,6 +44,7 @@ document.getElementById("uploadForm").addEventListener("click", async (event) =>
         if (response.ok) {
             const ans=document.createElement('p');
             ans.textContent = `Predicted Class: ${result.class}`;
+            document.getElementById("result").innerHTML="";
             document.getElementById("result").appendChild(ans);
         } else {
             document.getElementById("result").textContent = `Error: ${result.error}`;
