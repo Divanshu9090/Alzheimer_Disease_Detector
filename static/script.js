@@ -41,13 +41,14 @@ document.getElementById("uploadForm").addEventListener("click", async (event) =>
             body: formData,
         });
         const result = await response.json();
+        const id=document.getElementById("result");
+        id.innerHTML="";
         if (response.ok) {
             const ans=document.createElement('p');
             ans.textContent = `Predicted Class: ${result.class}`;
-            document.getElementById("result").innerHTML="";
-            document.getElementById("result").appendChild(ans);
+            id.appendChild(ans);
         } else {
-            document.getElementById("result").textContent = `Error: ${result.error}`;
+            id.textContent = `Error: ${result.error}`;
         }
     } catch (error) {
         document.getElementById("result").textContent = `An error occurred: ${error.message}`;
