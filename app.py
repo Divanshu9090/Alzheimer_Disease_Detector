@@ -1,23 +1,10 @@
-from flask import Flask, render_template, request, jsonify
+import streamlit as st
 import torch
 from torchvision import transforms
 from PIL import Image
-import io
+import os
 
-app = Flask(__name__)
-
-# Define the CNN block for building the model
-def cnn_block(in_ch, out_ch, pool=False):
-    layers = [
-        torch.nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1),
-        torch.nn.BatchNorm2d(out_ch),
-        torch.nn.ReLU(inplace=True)
-    ]
-    if pool:
-        layers.append(torch.nn.MaxPool2d(2))
-    return torch.nn.Sequential(*layers)
-
-# Define the model class
+# Load the trained model
 class SCNN4(torch.nn.Module):
     def __init__(self, in_ch, n_classes):
         super().__init__()
@@ -39,39 +26,52 @@ class SCNN4(torch.nn.Module):
         out = self.last(out)
         return out
 
-# Initialize the device (GPU if available, otherwise CPU)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+def cnn_block(in_ch, out_ch, pool=False):
+    layers = [
+        torch.nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1),
+        torch.nn.BatchNorm2d(out_ch),
+        torch.nn.ReLU(inplace=True)
+    ]
+    if pool:
+        layers.append(torch.nn.MaxPool2d(2))
+    return torch.nn.Sequential(*layers)
 
-# Load the trained model and set it to evaluation mode
-model = SCNN4(1, 4)  # Adjust the number of classes if necessary
+# Define the function for prediction
+def predict_label(img, model, classes):
+    xb = img.unsqueeze(0)
+    yb = model(xb)
+    _, preds = torch.max(yb, dim=1)
+    return classes[preds[0].item()]
+
+# Load the model and set it to evaluation mode
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = SCNN4(1, 4)  # Adjust the number of classes if different
 model.load_state_dict(torch.load("scnn4.pth", map_location=device))
 model = model.to(device)
 model.eval()
 
-# Set the image transformation
+# Set up the image transformation
 transform = transforms.Compose([
     transforms.Grayscale(),
     transforms.ToTensor()
 ])
 
-# Define the class labels
-classes = ['Mild Dementia', 'Moderate Dementia', 'Non Demented', 'Very mild Dementia']
+# Set the list of classes
+classes = ['Mild Dementia', 'Moderate Dementia', 'Non Demented', 'Very mild Dementia']  # Replace with your actual class names
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# Streamlit interface
+st.title("Image Classification Web App")
+st.write("Upload an image and let the model predict its class!")
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    # Get the image from the request
-    file = request.files['file']
-    img = Image.open(io.BytesIO(file.read()))
+uploaded_file = st.file_uploader("Choose an image...", type="jpg")
+
+if uploaded_file is not None:
+    # Display the uploaded image
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+
+    # Transform the image and predict
+    img_tensor = transform(image).to(device)
+    label = predict_label(img_tensor, model, classes)
     
-    # Transform the image and make a prediction
-    img_tensor = transform(img).unsqueeze(0).to(device)
-    with torch.no_grad():
-        output = model(img_tensor)
-        _, preds = torch.max(output, dim=1)
-        prediction = classes[preds.item()]
-    
-    return jsonify({'class': prediction})
+    st.write(f"**Prediction:** {label}")
