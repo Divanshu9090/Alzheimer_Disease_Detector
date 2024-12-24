@@ -6,7 +6,6 @@ import io
 
 app = Flask(__name__)
 
-# Define the CNN block for building the model
 def cnn_block(in_ch, out_ch, pool=False):
     layers = [
         torch.nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1),
@@ -17,7 +16,6 @@ def cnn_block(in_ch, out_ch, pool=False):
         layers.append(torch.nn.MaxPool2d(2))
     return torch.nn.Sequential(*layers)
 
-# Define the model class
 class SCNN4(torch.nn.Module):
     def __init__(self, in_ch, n_classes):
         super().__init__()
@@ -39,22 +37,18 @@ class SCNN4(torch.nn.Module):
         out = self.last(out)
         return out
 
-# Initialize the device (GPU if available, otherwise CPU)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Load the trained model and set it to evaluation mode
-model = SCNN4(1, 4)  # Adjust the number of classes if necessary
+model = SCNN4(1, 4)
 model.load_state_dict(torch.load("scnn4.pth", map_location=device))
 model = model.to(device)
 model.eval()
 
-# Set the image transformation
 transform = transforms.Compose([
     transforms.Grayscale(),
     transforms.ToTensor()
 ])
 
-# Define the class labels
 classes = ['Mild Dementia', 'Moderate Dementia', 'Non Demented', 'Very mild Dementia']
 
 @app.route('/')
@@ -63,11 +57,9 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Get the image from the request
     file = request.files['file']
     img = Image.open(io.BytesIO(file.read()))
     
-    # Transform the image and make a prediction
     img_tensor = transform(img).unsqueeze(0).to(device)
     with torch.no_grad():
         output = model(img_tensor)
@@ -77,4 +69,4 @@ def predict():
     return jsonify({'class': prediction})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
